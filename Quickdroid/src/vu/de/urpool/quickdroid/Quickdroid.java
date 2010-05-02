@@ -42,7 +42,7 @@ import android.gesture.GestureOverlayView.OnGesturePerformedListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
+import android.preference.PreferWindowManagedroid.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -157,7 +157,10 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	        speechRecognizer.setVisibility(View.VISIBLE);
         }
         
-        ImageButton clearSearchText = (ImageButton) findViewById(R.id.clearSearchText);
+        ImageButton clearSearchText = (ImageButton) findViewById(R.id.clearSearcmSettings.getBoolean(Preferences.PREF_SOFT_KEYBOARD, false)) {
+	        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN |
+	        	WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }ewById(R.id.clearSearchText);
         clearSearchText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -369,9 +372,13 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 			case SETTINGS_MENU:
 				Intent intent = new Intent(this, Preferences.class);
 				startActivityForResult(intent, SETTINGS);
-				return true;
-			case CLEAR_SEARCH_HISTORY:
-				mSearchHistoryComposer.clearSearchHistory();
+				return tr) {
+				if (!data.getBooleanExtra(Preferences.PREF_SEARCH_HISTORY, true)) {
+					mSearchHistoryComposer.clearSearchHistory();
+				}
+				if (data.getBooleanExtra(Preferences.PREFS_CHANGED, false)) {			
+					restart();
+				};
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -380,11 +387,9 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	public void activateLaunchable(Launchable launchable) {
 		mActiveLaunchable = launchable;
 		if (mActiveLaunchable.activate()) {
-			mSearchHistoryComposer.addLaunchable(launchable, true, true);
-		}
-	}
-	
-	public void deactivateLaunchable() {
+			mSearchHistoryComp3) {
+			SharedPreferences.Editor editor = settings.edit();
+			if (versionCode < 8) {e() {
 		if(mActiveLaunchable != null) {
 			mActiveLaunchable.deactivate();
 			mActiveLaunchable = null;
@@ -406,9 +411,26 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 				ArrayList<String> suggestions = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS); 
 				if (suggestions != null && suggestions.size() > 0) {
 					Editable editableText = mSearchText.getEditableText();
-					editableText.clear();
-					editableText.append(suggestions.get(0));
-					mClearSearchTextApproval = false;
+				if (versionCode < 22) {
+				editor.putInt("versionCode", 22);
+				int searchHistorySize = Integer.parseInt(Preferences.DEFAULT_SEARCH_HISTORY_SIZE);
+				String strMaxSearchHistorySize = settings.getString(Preferences.PREF_MAX_SEARCH_HISTORY_SIZE,
+					Preferences.DEFAULT_SEARCH_HISTORY_SIZE);
+				try {
+					searchHistorySize = Integer.parseInt(strMaxSearchHistorySize);
+		    	} catch (NumberFormatException e) {	
+		    	}
+		    	if (searchHistorySize == 0) {
+		    		editor.putBoolean(Preferences.PREF_SEARCH_HISTORY, false);
+		    		editor.putString(Preferences.PREF_MAX_SEARCH_HISTORY_SIZE, Preferences.DEFAULT_SEARCH_HISTORY_SIZE);
+		    		editor.commit();
+		    	}
+		    	
+		    Code == RESULT_OK) {
+				ArrayList<String> suggestions = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS); 
+				if (suggestions != null && suggestions.size() > 0) {
+					Editable editableText = mSearchText.getEditableText();
+				editor.putInt("versionCode", 23tApproval = false;
 				}
 			}
 		} else if (requestCode == SETTINGS) {
@@ -461,80 +483,4 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	}
 	
 	public static final void deactivateQuickLaunch(Context context) {
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancel(QUICK_LAUNCH_THUMBNAIL_ID);
-	}
-	
-	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-		ArrayList<Prediction> predictions = mGestureLibrary.recognize(gesture);
-		if (predictions.size() > 0) {
-			Prediction prediction = predictions.get(0);
-			if (prediction.score > 1.0) {
-				Editable searchText = mSearchText.getText();				
-				if ("del_one_char".equals(prediction.name)) {
-					if (searchText.length() > 0) {
-						searchText.delete(searchText.length() - 1, searchText.length());
-					}
-				} else if ("clear_search_text".equals(prediction.name)) {
-					searchText.clear();
-				} else {
-					if (prediction.name.startsWith("=")) {
-						searchText.clear();
-						searchText.append(prediction.name.substring(1));
-					} else {
-						searchText.append(prediction.name);
-					}
-				}
-			}
-		}
-	}
-}
-
-class SearchTextGestureDetector implements OnTouchListener, OnGestureListener {
-	private final EditText mSearchText;
-	private GestureDetector mGestureDetector;
-
-	SearchTextGestureDetector(EditText searchText) {
-		mSearchText = searchText;
-		mGestureDetector = new GestureDetector(this);
-	}
-	
-	@Override
-	public boolean onDown(MotionEvent e) {
-		return false;
-	}
-
-	@Override
-	public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
-		float distX = event2.getX() - event1.getX();
-		if(Math.abs(distX) >= mSearchText.getWidth() / 4) {
-			mSearchText.clearFocus();
-			mSearchText.setText("");
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void onLongPress(MotionEvent event) {
-	}
-
-	@Override
-	public boolean onScroll(MotionEvent event1, MotionEvent event2, float distanceX, float distanceY) {
-		return false;
-	}
-
-	@Override
-	public void onShowPress(MotionEvent event) {
-	}
-
-	@Override
-	public boolean onSingleTapUp(MotionEvent event) {
-		return false;
-	}
-
-	@Override
-	public boolean onTouch(View view, MotionEvent event) {
-		return mGestureDetector.onTouchEvent(event);
-	}
-}
+		NotificationManager notificati
