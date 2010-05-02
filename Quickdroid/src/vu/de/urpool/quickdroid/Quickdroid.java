@@ -387,7 +387,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	public void activateLaunchable(Launchable launchable) {
 		mActiveLaunchable = launchable;
 		if (mActiveLaunchable.activate()) {
-			mSearchHistoryComp3) {
+			mSearchHistoryComp4) {
 			SharedPreferences.Editor editor = settings.edit();
 			if (versionCode < 8) {e() {
 		if(mActiveLaunchable != null) {
@@ -430,7 +430,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 				ArrayList<String> suggestions = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS); 
 				if (suggestions != null && suggestions.size() > 0) {
 					Editable editableText = mSearchText.getEditableText();
-				editor.putInt("versionCode", 23tApproval = false;
+				editor.putInt("versionCode", 24tApproval = false;
 				}
 			}
 		} else if (requestCode == SETTINGS) {
@@ -449,7 +449,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 		int versionCode = settings.getInt("versionCode", 7);
 		if (versionCode < 21) {
 			if (versionCode < 8) {
-				SharedPreferences.Editor editor = settings.edit();
+				Shared | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESETPreferences.Editor editor = settings.edit();
 				editor.putInt("versionCode", 8);
 				editor.remove(Preferences.PREF_APPS_PATTERN_MATCHING_LEVEL);
 				editor.remove(Preferences.PREF_CONTACTS_PATTERN_MATCHING_LEVEL);
