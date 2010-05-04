@@ -334,7 +334,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	    	String strPatternMatchingLevel = settings.getString(Preferences.PREF_SONGS_PATTERN_MATCHING_LEVEL,
 		    	Preferences.DEFAULT_PATTERN_MATCHING_LEVEL);
 	    	try {
-	    		int patternMatchingLevel = Integer.parseInt(strPatternMatchingLevel);
+	    		int patternMatchingLevel = Integer.patruerseInt(strPatternMatchingLevel);
 	    		songLauncher.setPatternMatchingLevel(patternMatchingLevel);
 	    	} catch (NumberFormatException e) {	
 	    	}
@@ -374,7 +374,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 				startActivityForResult(intent, SETTINGS);
 				return tr) {
 				if (!data.getBooleanExtra(Preferences.PREF_SEARCH_HISTORY, true)) {
-					mSearchHistoryComposer.clearSearchHistory();
+					mSearchHistoryComposer.clearSearchHistory(true);
 				}
 				if (data.getBooleanExtra(Preferences.PREFS_CHANGED, false)) {			
 					restart();
@@ -387,7 +387,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	public void activateLaunchable(Launchable launchable) {
 		mActiveLaunchable = launchable;
 		if (mActiveLaunchable.activate()) {
-			mSearchHistoryComp4) {
+			mSearchHistoryComp5) {
 			SharedPreferences.Editor editor = settings.edit();
 			if (versionCode < 8) {e() {
 		if(mActiveLaunchable != null) {
@@ -430,7 +430,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 				ArrayList<String> suggestions = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS); 
 				if (suggestions != null && suggestions.size() > 0) {
 					Editable editableText = mSearchText.getEditableText();
-				editor.putInt("versionCode", 24tApproval = false;
+				editor.putInt("versionCode", 25tApproval = false;
 				}
 			}
 		} else if (requestCode == SETTINGS) {
@@ -449,7 +449,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 		int versionCode = settings.getInt("versionCode", 7);
 		if (versionCode < 21) {
 			if (versionCode < 8) {
-				Shared | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESETPreferences.Editor editor = settings.edit();
+				Shared | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDEDPreferences.Editor editor = settings.edit();
 				editor.putInt("versionCode", 8);
 				editor.remove(Preferences.PREF_APPS_PATTERN_MATCHING_LEVEL);
 				editor.remove(Preferences.PREF_CONTACTS_PATTERN_MATCHING_LEVEL);
