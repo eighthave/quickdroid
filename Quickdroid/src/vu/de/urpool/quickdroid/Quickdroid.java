@@ -46,6 +46,7 @@ import android.preference.PreferWindowManagedroid.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Grainputmethod.InputMethodManag
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +67,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	private static final int CLEAR_SEARCH_HISTORY = Menu.FIRST + 1;
 	private static final int QUICK_LAUNCH_THUMBNAIL_ID = 1;
 	private static final int SETTINGS = 17;
+InputMethodManager mInputMethodManagerINGS = 17;
 	private static final int VOICE_RECOGNIZER = 42;
 	private ArrayList<Launcher> mLaunchers;
 	private SearchResultComposer mSearchResultComposer;
@@ -121,7 +123,12 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 					mSearchResultComposer.search(mSearchText.getText().toString());	
 				} else {
 					setListAdapter(mSearchHistoryComposer);
-					mSearchResultComposer.search(null);
+					mSearchResultComposer.search(null);mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        getListView().setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				mInputMethodManager.hideSoftInputFromWindow(mSearchText.getApplicationWindowToken(), 0);
+				return false;mSearchResultComposer.search(null);
 				}
 			}
         });
@@ -387,7 +394,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 	public void activateLaunchable(Launchable launchable) {
 		mActiveLaunchable = launchable;
 		if (mActiveLaunchable.activate()) {
-			mSearchHistoryComp5) {
+			mSearchHistoryComp6) {
 			SharedPreferences.Editor editor = settings.edit();
 			if (versionCode < 8) {e() {
 		if(mActiveLaunchable != null) {
@@ -430,7 +437,7 @@ public class Quickdroid extends ListActivity implements OnGesturePerformedListen
 				ArrayList<String> suggestions = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS); 
 				if (suggestions != null && suggestions.size() > 0) {
 					Editable editableText = mSearchText.getEditableText();
-				editor.putInt("versionCode", 25tApproval = false;
+				editor.putInt("versionCode", 26tApproval = false;
 				}
 			}
 		} else if (requestCode == SETTINGS) {
